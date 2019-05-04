@@ -19,7 +19,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS += ["api.alkrakow.pl", "alkrakow.pl"]
+ALLOWED_HOSTS += ["api.alkrakow.pl", "latest.alkrakow.pl", "alkrakow.pl"]
 
 # EMAIL SETTINGS
 EMAIL_HOST = read_env("PORTAL_PROD_EMAIL_HOST")
