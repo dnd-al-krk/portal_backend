@@ -19,7 +19,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS += ["alkrk.toady.org", "alkrakow.pl"]
+ALLOWED_HOSTS += ["api.alkrakow.pl", "alkrakow.pl"]
 
 # EMAIL SETTINGS
 EMAIL_HOST = read_env("PORTAL_PROD_EMAIL_HOST")
@@ -36,3 +36,5 @@ STATIC_URL = "/static/"
 SECURE_SSL_REDIRECT = True
 
 ADMINS = (("AL KRK Tech", "alkrk_tech@toady.org"),)
+
+CORS_ORIGIN_WHITELIST = ["alkrakow.pl"]
