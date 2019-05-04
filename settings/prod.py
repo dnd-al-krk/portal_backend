@@ -37,4 +37,4 @@ SECURE_SSL_REDIRECT = True
 
 ADMINS = (("AL KRK Tech", "alkrk_tech@toady.org"),)
 
-CORS_ORIGIN_WHITELIST = ["alkrakow.pl"]
+CORS_ORIGIN_WHITELIST = ["alkrakow.pl", "latest.alkrakow.pl"]
