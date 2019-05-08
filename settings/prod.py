@@ -28,7 +28,7 @@ EMAIL_FROM = EMAIL_HOST_USER = read_env("PORTAL_PROD_EMAIL_USERNAME")
 EMAIL_HOST_PASSWORD = read_env("PORTAL_PROD_EMAIL_PASSWORD")
 EMAIL_USE_SSL = True
 
-ROOT_URL = "http://alkrakow.pl"
+ROOT_URL = "http://api.alkrakow.pl"
 
 STATIC_ROOT = BASE_DIR + "/public/static/"
 STATIC_URL = "/static/"
@@ -38,3 +38,5 @@ SECURE_SSL_REDIRECT = True
 ADMINS = (("AL KRK Tech", "alkrk_tech@toady.org"),)
 
 CORS_ORIGIN_WHITELIST = ["alkrakow.pl", "latest.alkrakow.pl"]
+
+APP_URL = "https://alkrakow.pl"

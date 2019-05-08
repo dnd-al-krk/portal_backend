@@ -17,3 +17,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+ROOT_URL = "http://localhost"
+
+APP_URL = "http://localhost:3000"
