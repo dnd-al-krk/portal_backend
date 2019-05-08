@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect
+
 # Create your views here.
 from django.utils.http import urlsafe_base64_decode
 
