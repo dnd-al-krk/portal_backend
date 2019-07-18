@@ -59,13 +59,3 @@ class PlayerCharacter(UUIDModel):
     def __str__(self):
         return self.name
 
-
-class DMNote(UUIDModel):
-    dm = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="dm_notes_given")
-    player = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="dm_notes")
-    note = models.TextField(_("Note on player"))
-    created = models.DateTimeField(_("Created"), auto_now_add=True)
-    modified = models.DateTimeField(_("Modified"), auto_now=True)
-
-    def __str__(self):
-        return "Note by {} for {}".format(self.dm, self.player)

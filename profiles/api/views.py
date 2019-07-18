@@ -9,13 +9,12 @@ from .filters import PlayerCharacterFilter
 from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
 from .serializers import (
     PlayerCharacterSerializer,
-    DMNoteSerializer,
     ProfileSerializer,
     PlayerCharacterListSerializer,
     RegisterProfileSerializer,
     PublicProfileSerializer,
 )
-from ..models import PlayerCharacter, DMNote, Profile
+from ..models import PlayerCharacter, Profile
 
 
 class PlayerCharacterViewSet(viewsets.ModelViewSet):
@@ -38,16 +37,6 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
 
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile)
-
-
-class DMNoteViewSet(viewsets.ModelViewSet):
-    serializer_class = DMNoteSerializer
-    queryset = DMNote.objects.all()
-    permission_classes = [IsAuthenticated, IsDMOwnerOrReadOnly, OnlyDMCanRead]
-
-    def perform_create(self, serializer):
-        serializer.save(dm=self.request.user.profile)
-
 
 class ProfileViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = PublicProfileSerializer

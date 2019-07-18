@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from ..models import PlayerCharacter, DMNote, Profile
+from ..models import PlayerCharacter, Profile
 
 logger = logging.getLogger(__name__)
 
@@ -31,13 +31,6 @@ class PlayerCharacterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerCharacter
         fields = ("id", "owner", "owner_name", "name", "pc_class", "race", "faction", "level", "created", "modified")
-
-
-class DMNoteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DMNote
-        fields = ("id", "player", "note")
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
