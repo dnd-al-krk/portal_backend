@@ -12,13 +12,13 @@ logger = logging.getLogger(__name__)
 class PublicPlayerCharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerCharacter
-        fields = ("id", "name", "pc_class", "race", "level", "faction", "notes","dead")
+        fields = ("id", "name", "pc_class", "race", "level", "faction", "notes", "dead")
 
 
 class PlayerCharacterSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlayerCharacter
-        fields = ("id", "owner", "name", "pc_class", "race", "faction", "level", "notes", "created", "modified","dead")
+        fields = ("id", "owner", "name", "pc_class", "race", "faction", "level", "notes", "created", "modified", "dead")
         read_only_fields = ("created", "modified", "owner")
 
 
