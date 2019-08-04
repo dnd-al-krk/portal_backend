@@ -39,16 +39,16 @@ class GameSessionViewSet(
 
         instance = self.get_object()
         profile = request.user.profile
-        print(profile.id)
         try:
             character_id = request.data["character_id"]
-            print(character_id)
             character = profile.characters.get(id=character_id)
-            print(character)
         except (PlayerCharacter.DoesNotExist, KeyError):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         if not instance.can_sign_up(profile):
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        if character.dead:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         GameSessionPlayerSignUp.objects.create(game=instance, player=profile, character=character)

@@ -6,4 +6,4 @@ from ..models import PlayerCharacter
 class PlayerCharacterFilter(filters.FilterSet):
     class Meta:
         model = PlayerCharacter
-        fields = ("owner",)
+        fields = ("owner","dead")

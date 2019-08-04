@@ -9,7 +9,6 @@ from utils.models import UUIDModel
 from .constants import ROLE_DM, ROLE_PLAYER
 from .utils import account_activation_token
 
-
 class Profile(models.Model):
 
     USER_TYPE = ((ROLE_DM, "Dungeon Master"), (ROLE_PLAYER, "Player"))
@@ -55,6 +54,7 @@ class PlayerCharacter(UUIDModel):
     notes = models.TextField(_("Additional notes"), blank=True, null=True)
     created = models.DateTimeField(_("Created"), auto_now_add=True)
     modified = models.DateTimeField(_("Modified"), auto_now=True)
+    dead = models.BooleanField(default=False,null=False)
 
     def __str__(self):
         return self.name
