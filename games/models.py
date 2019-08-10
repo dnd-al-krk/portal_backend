@@ -4,6 +4,8 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+import datetime
+import time
 
 from utils.email import send_email
 from .constants import (
@@ -97,10 +99,10 @@ class GameSessionQuerySet(models.QuerySet):
         return self.filter(active=True)
 
     def future(self):
-        return self.filter(date__gte=timezone.now())
+        return self.filter(date__gte=datetime.datetime.fromtimestamp(time.time()))
 
     def past(self):
-        return self.filter(date__lt=timezone.now())
+        return self.filter(date__lt=datetime.datetime.fromtimestamp(time.time()))
 
     def reported(self):
         return self.filter(reported=True)
@@ -146,6 +148,12 @@ class GameSession(UUIDModel):
         verbose_name_plural = _("Game Sessions")
         ordering = ("-date", "table")
 
+    def date_end(self):
+        if self.time_end and self.time_start and self.time_end < self.time_start:
+            return self.date + datetime.timedelta(days=1)
+        else: 
+            return self.date
+
     def __str__(self):
         return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
 
@@ -161,9 +169,12 @@ class GameSession(UUIDModel):
 
     @property
     def ended(self):
-        t = timezone.now()
-        return t.date() > self.date or (
-            self.time_end is not None and t.date() == self.date and t.time() > self.time_end
+        t = datetime.datetime.fromtimestamp(time.time())
+
+        date_end = self.date_end()
+
+        return t.date() > date_end or (
+            self.time_end is not None and t.date() == date_end and t.time() > self.time_end
         )
 
     def has_player(self, profile: Profile):
@@ -210,7 +221,7 @@ class GameSession(UUIDModel):
     def report(self, extra_players=None, save=True):
         self.reported = True
         self.extra_players = extra_players
-        self.report_time = timezone.now()
+        self.report_time = datetime.datetime.fromtimestamp(time.time())
         if save:
             self.save(update_fields=["reported", "report_time", "extra_players"])
 

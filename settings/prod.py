@@ -40,3 +40,5 @@ ADMINS = (("AL KRK Tech", "alkrk_tech@toady.org"),)
 CORS_ORIGIN_WHITELIST = ["alkrakow.pl", "latest.alkrakow.pl"]
 
 APP_URL = "https://alkrakow.pl"
+
+TIME_ZONE = "Europe/Warsaw"
