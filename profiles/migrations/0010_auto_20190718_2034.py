@@ -5,20 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0009_auto_20181220_1636'),
-    ]
+    dependencies = [("profiles", "0009_auto_20181220_1636")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='dmnote',
-            name='dm',
-        ),
-        migrations.RemoveField(
-            model_name='dmnote',
-            name='player',
-        ),
-        migrations.DeleteModel(
-            name='DMNote',
-        ),
+        migrations.RemoveField(model_name="dmnote", name="dm"),
+        migrations.RemoveField(model_name="dmnote", name="player"),
+        migrations.DeleteModel(name="DMNote"),
     ]

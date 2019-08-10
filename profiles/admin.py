@@ -48,4 +48,3 @@ class PlayerCharacterAdmin(admin.ModelAdmin):
     list_display = ["name", "level", "race", "pc_class", "faction"]
     search_fields = ["name"]
     list_filter = ["level", "race", "pc_class", "faction"]
-
