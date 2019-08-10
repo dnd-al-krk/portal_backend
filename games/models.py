@@ -151,7 +151,7 @@ class GameSession(UUIDModel):
     def date_end(self):
         if self.time_end and self.time_start and self.time_end < self.time_start:
             return self.date + datetime.timedelta(days=1)
-        else: 
+        else:
             return self.date
 
     def __str__(self):
@@ -173,9 +173,7 @@ class GameSession(UUIDModel):
 
         date_end = self.date_end()
 
-        return t.date() > date_end or (
-            self.time_end is not None and t.date() == date_end and t.time() > self.time_end
-        )
+        return t.date() > date_end or (self.time_end is not None and t.date() == date_end and t.time() > self.time_end)
 
     def has_player(self, profile: Profile):
         return profile in self.players.all()
