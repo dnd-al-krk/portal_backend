@@ -38,6 +38,7 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(owner=self.request.user.profile)
 
+
 class ProfileViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = PublicProfileSerializer
     queryset = Profile.objects.all()

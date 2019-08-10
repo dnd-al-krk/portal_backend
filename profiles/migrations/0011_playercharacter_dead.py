@@ -5,14 +5,8 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('profiles', '0010_auto_20190718_2034'),
-    ]
+    dependencies = [("profiles", "0010_auto_20190718_2034")]
 
     operations = [
-        migrations.AddField(
-            model_name='playercharacter',
-            name='dead',
-            field=models.BooleanField(default=False),
-        ),
+        migrations.AddField(model_name="playercharacter", name="dead", field=models.BooleanField(default=False))
     ]

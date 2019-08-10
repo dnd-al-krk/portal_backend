@@ -9,6 +9,7 @@ from utils.models import UUIDModel
 from .constants import ROLE_DM, ROLE_PLAYER
 from .utils import account_activation_token
 
+
 class Profile(models.Model):
 
     USER_TYPE = ((ROLE_DM, "Dungeon Master"), (ROLE_PLAYER, "Player"))
@@ -58,4 +59,3 @@ class PlayerCharacter(UUIDModel):
 
     def __str__(self):
         return self.name
-

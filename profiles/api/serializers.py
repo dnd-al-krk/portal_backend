@@ -32,6 +32,7 @@ class PlayerCharacterListSerializer(serializers.ModelSerializer):
         model = PlayerCharacter
         fields = ("id", "owner", "owner_name", "name", "pc_class", "race", "faction", "level", "created", "modified")
 
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
