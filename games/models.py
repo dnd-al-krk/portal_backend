@@ -168,11 +168,13 @@ class GameSession(UUIDModel):
 
     @property
     def ended(self):
-        t = datetime.datetime.fromtimestamp(time.time())
+        current_time = datetime.datetime.fromtimestamp(time.time())
 
         date_end = self.date_end()
 
-        return t.date() > date_end or (self.time_end is not None and t.date() == date_end and t.time() > self.time_end)
+        return current_time.date() > date_end or (
+            self.time_end is not None and current_time.date() == date_end and current_time.time() > self.time_end
+        )
 
     def has_player(self, profile: Profile):
         return profile in self.players.all()
