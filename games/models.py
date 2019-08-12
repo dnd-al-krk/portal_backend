@@ -151,8 +151,7 @@ class GameSession(UUIDModel):
     def date_end(self):
         if self.time_end and self.time_start and self.time_end < self.time_start:
             return self.date + datetime.timedelta(days=1)
-        else:
-            return self.date
+        return self.date
 
     def __str__(self):
         return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
@@ -219,7 +218,7 @@ class GameSession(UUIDModel):
     def report(self, extra_players=None, save=True):
         self.reported = True
         self.extra_players = extra_players
-        self.report_time = datetime.datetime.fromtimestamp(time.time())
+        self.report_time = timezone.now()
         if save:
             self.save(update_fields=["reported", "report_time", "extra_players"])
 
