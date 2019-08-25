@@ -196,7 +196,7 @@ class GameSession(UUIDModel):
             )
 
     def get_absolute_url(self):
-        return settings.ROOT_URL + "/games/game/" + str(self.id)
+        return settings.APP_URL + "/games/game/" + str(self.id)
 
     def cancel(self):
         self.dm = None
