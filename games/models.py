@@ -52,10 +52,10 @@ ADVENTURE_TYPES = (
 )
 
 ADVENTURE_TIERS = (
-    (ADVENTURE_TIER1, _("Tier 1")),
-    (ADVENTURE_TIER2, _("Tier 2")),
-    (ADVENTURE_TIER3, _("Tier 3")),
-    (ADVENTURE_TIER4, _("Tier 4")),
+    (ADVENTURE_TIER1, _("Tier 1 (Level 1-4)")),
+    (ADVENTURE_TIER2, _("Tier 2 (Level 5-10)")),
+    (ADVENTURE_TIER3, _("Tier 3 (Level 11-16)")),
+    (ADVENTURE_TIER4, _("Tier 4 (Level 17-20)")),
 )
 
 
