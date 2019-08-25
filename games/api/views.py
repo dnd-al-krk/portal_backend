@@ -31,7 +31,7 @@ class GameSessionViewSet(
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_class = GameSessionFilter
     search_fields = ("table__name", "dm__user__first_name", "dm__user__last_name", "dm__nickname", "adventure__title")
-    ordering_fields = ("date",)
+    ordering_fields = ("date", "time_end", "time_start")
     ordering = "date"
 
     @action(methods=["PUT"], detail=True)
