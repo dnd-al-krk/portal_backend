@@ -30,6 +30,7 @@ class GameSessionPlayerSignUpSerializer(serializers.ModelSerializer):
 
 class GameSessionSerializer(serializers.ModelSerializer):
     table_name = serializers.CharField(source="table.name", read_only=True)
+    table_extra_notes = serializers.CharField(source="table.extra_notes", read_only=True)
     dm = PublicProfileSerializer(read_only=True)
     players = GameSessionPlayerSignUpSerializer(many=True, source="gamesessionplayersignup_set", read_only=True)
     adventure = AdventureSerializer()
@@ -43,6 +44,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
             "id",
             "date",
             "table_name",
+            "table_extra_notes",
             "adventure",
             "dm",
             "players",

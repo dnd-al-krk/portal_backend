@@ -29,6 +29,7 @@ from utils.models import UUIDModel
 
 class Table(UUIDModel):
     name = models.CharField(_("Table name"), max_length=100)
+    extra_notes = models.TextField("Table extra notes", blank=True)
     max_spots = models.PositiveIntegerField(_("Maximum spots"), default=1)
 
     class Meta:
