@@ -38,7 +38,7 @@ class Profile(models.Model):
             {
                 "user": self.user,
                 "profile": self,
-                "uid": urlsafe_base64_encode(force_bytes(self.user.pk)).decode('utf-8'),
+                "uid": urlsafe_base64_encode(force_bytes(self.user.pk)),
                 "token": account_activation_token.make_token(self.user),
             },
             to=[self.user.email],
