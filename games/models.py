@@ -139,6 +139,7 @@ class GameSession(UUIDModel):
     active = models.BooleanField(_("Active"), default=False)
     reported = models.BooleanField(_("Reported"), default=False)
     report_time = models.DateTimeField(_("Reporting time"), blank=True, null=True)
+    report_notes = models.TextField(_("Extra report notes"), blank=True)
     extra_players = models.CharField(_("Additional players"), max_length=255, blank=True, null=True)
 
     objects = models.Manager.from_queryset(GameSessionQuerySet)()
