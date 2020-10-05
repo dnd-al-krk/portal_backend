@@ -69,14 +69,15 @@ class GameSessionReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GameSession
-        fields = ("players", "extra_players")
+        fields = ("players", "extra_players", "report_notes")
 
     def update(self, instance, validated_data):
         players = validated_data.get("players")
         extra_players = validated_data.get("extra_players", None)
+        report_notes = validated_data.get("report_notes", None)
         GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
         GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
-        instance.report(extra_players)
+        instance.report(extra_players=extra_players, report_notes=report_notes)
         return instance
 
 

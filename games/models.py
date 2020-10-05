@@ -219,12 +219,14 @@ class GameSession(UUIDModel):
             bcc=[player.user.email for player in self.players.all()],
         )
 
-    def report(self, extra_players=None, save=True):
+    def report(self, extra_players=None, report_notes=None, save=True):
         self.reported = True
         self.extra_players = extra_players
         self.report_time = timezone.now()
+        if report_notes is not None:
+            self.report_notes = report_notes
         if save:
-            self.save(update_fields=["reported", "report_time", "extra_players"])
+            self.save(update_fields=["reported", "report_time", "extra_players", "report_notes"])
 
 
 class GameSessionPlayerSignUp(models.Model):
