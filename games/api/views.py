@@ -7,7 +7,12 @@ from rest_framework.response import Response
 
 from profiles.models import PlayerCharacter
 from .filters import AdventureFilter, GameSessionFilter
-from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer
+from .serializers import (
+    AdventureSerializer,
+    GameSessionSerializer,
+    GameSessionBookSerializer,
+    GameSessionReportSerializer,
+)
 from ..models import Adventure, GameSession, GameSessionPlayerSignUp
 
 
@@ -71,19 +76,16 @@ class GameSessionViewSet(
         except GameSessionPlayerSignUp.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @action(methods=["PUT"], detail=True)
+    @action(methods=["PUT"], detail=True, serializer_class=GameSessionReportSerializer)
     def report(self, request, *args, **kwargs):
-        data = request.data
         instance = self.get_object()
         dm = request.user.profile
         if dm != instance.dm:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        players = data.get("players")
-        extra_players = data.get("extra_players", None)
-        GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
-        GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
-        instance.report(extra_players)
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
         return Response(status=status.HTTP_200_OK)
 

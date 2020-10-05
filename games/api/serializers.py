@@ -64,6 +64,22 @@ class GameSessionSerializer(serializers.ModelSerializer):
         return game.time_end.strftime("%H:%M") if game.time_end else ""
 
 
+class GameSessionReportSerializer(serializers.ModelSerializer):
+    players = serializers.ListField(child=serializers.IntegerField(min_value=1))
+
+    class Meta:
+        model = GameSession
+        fields = ("players", "extra_players")
+
+    def update(self, instance, validated_data):
+        players = validated_data.get("players")
+        extra_players = validated_data.get("extra_players", None)
+        GameSessionPlayerSignUp.objects.filter(game=instance).update(reported=False)
+        GameSessionPlayerSignUp.objects.filter(player_id__in=players, game=instance).update(reported=True)
+        instance.report(extra_players)
+        return instance
+
+
 class GameSessionBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameSession
