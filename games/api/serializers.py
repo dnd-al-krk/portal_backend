@@ -45,6 +45,7 @@ class GameSessionSerializer(serializers.ModelSerializer):
             "date",
             "table_name",
             "table_extra_notes",
+            "report_notes",
             "adventure",
             "dm",
             "players",
