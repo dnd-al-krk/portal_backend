@@ -7,7 +7,8 @@ from rest_framework.response import Response
 
 from profiles.models import PlayerCharacter
 from .filters import AdventureFilter, GameSessionFilter
-from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer, TableSerializer
+from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer, TableSerializer, \
+    NewGameSessionBookSerializer
 from ..models import Adventure, GameSession, GameSessionPlayerSignUp, Table
 
 
@@ -29,7 +30,10 @@ class TablesViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
 
 
 class GameSessionViewSet(
-    mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
 ):
     serializer_class = GameSessionSerializer
     queryset = GameSession.games.all()
@@ -104,10 +108,30 @@ class PastGameSessionViewSet(GameSessionViewSet):
         return GameSession.games.past().exclude(adventure=None)
 
 
-class GameSessionBookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class GameSessionBookViewSet(
+    mixins.UpdateModelMixin,
+    mixins.CreateModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = GameSessionBookSerializer
     queryset = GameSession.games.all()
     permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        """
+        Allows to create a new Game Session for virtual table only and by DM only.
+        """
+
+        if not request.user.profile.is_dm():
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        data = request.data
+        data["dm"] = request.user.profile.id
+
+        serializer = NewGameSessionBookSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()

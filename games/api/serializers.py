@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from profiles.api.serializers import PublicProfileSerializer, PublicPlayerCharacterSerializer
 from ..models import Adventure, GameSession, GameSessionPlayerSignUp, Table
@@ -75,3 +76,18 @@ class GameSessionBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameSession
         fields = ("id", "dm", "adventure", "time_start", "time_end", "spots", "notes")
+
+
+class NewGameSessionBookSerializer(GameSessionBookSerializer):
+
+    class Meta:
+        model = GameSessionBookSerializer.Meta.model
+        fields = GameSessionBookSerializer.Meta.fields + ("date", "table", "active")
+
+    def validate_table(self, table):
+        if not table.virtual:
+            raise ValidationError("Only virtual tables can be used")
+        return table
+
+    def save(self, **kwargs):
+        super(NewGameSessionBookSerializer, self).save(active=True)
