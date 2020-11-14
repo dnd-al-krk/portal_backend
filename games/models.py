@@ -31,6 +31,7 @@ class Table(UUIDModel):
     name = models.CharField(_("Table name"), max_length=100)
     extra_notes = models.TextField("Table extra notes", blank=True)
     max_spots = models.PositiveIntegerField(_("Maximum spots"), default=1)
+    virtual = models.BooleanField(_("Is only virtual"), default=False)
 
     class Meta:
         verbose_name = _("Table")

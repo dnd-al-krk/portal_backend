@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from profiles.api.serializers import PublicProfileSerializer, PublicPlayerCharacterSerializer
-from ..models import Adventure, GameSession, GameSessionPlayerSignUp
+from ..models import Adventure, GameSession, GameSessionPlayerSignUp, Table
 
 
 class AdventureSerializer(serializers.ModelSerializer):
@@ -17,6 +17,13 @@ class AdventureSerializer(serializers.ModelSerializer):
 
     def get_tier(self, adventure):
         return adventure.get_tier_display()
+
+
+class TableSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Table
+        fields = ("id", "name", "virtual")
 
 
 class GameSessionPlayerSignUpSerializer(serializers.ModelSerializer):
