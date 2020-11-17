@@ -31,6 +31,7 @@ class GameSessionPlayerSignUpSerializer(serializers.ModelSerializer):
 class GameSessionSerializer(serializers.ModelSerializer):
     table_name = serializers.CharField(source="table.name", read_only=True)
     table_extra_notes = serializers.CharField(source="table.extra_notes", read_only=True)
+    report_notes = serializers.SerializerMethodField()
     dm = PublicProfileSerializer(read_only=True)
     players = GameSessionPlayerSignUpSerializer(many=True, source="gamesessionplayersignup_set", read_only=True)
     adventure = AdventureSerializer()
@@ -63,6 +64,11 @@ class GameSessionSerializer(serializers.ModelSerializer):
 
     def get_time_end(self, game):
         return game.time_end.strftime("%H:%M") if game.time_end else ""
+
+    def get_report_notes(self, game):
+        if self.context["request"].user.profile != game.dm:
+            return ""
+        return game.report_notes
 
 
 class GameSessionReportSerializer(serializers.ModelSerializer):
