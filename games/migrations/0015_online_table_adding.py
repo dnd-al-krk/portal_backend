@@ -2,15 +2,17 @@
 
 from django.db import migrations, models
 
+from ..constants import ONLINE_TABLE_NAME
+
 
 def add_online_table(apps, schema_editor):
-    Table = app.get_model("games", "Table")
+    Table = apps.get_model("games", "Table")
 
     try:
-        Table.objects.get(name="Online")
+        Table.objects.get(name=ONLINE_TABLE_NAME)
     except Table.DoesNotExist:
         Table.objects.create(
-            name="Online",
+            name=ONLINE_TABLE_NAME,
             max_spots=7,
         )
 
