@@ -212,6 +212,10 @@ class GameSession(UUIDModel):
     def is_online(self):
         return self.table.is_online
 
+    @property
+    def is_booked(self):
+        return self.dm is not None
+
     def checkMinimumPlayers(self):
         """
         This is run after a player signs out of the game session. If there are not enough players
