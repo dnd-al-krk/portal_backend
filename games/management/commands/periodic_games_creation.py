@@ -25,8 +25,8 @@ class Command(BaseCommand):
 
         for day in range(1, days_to_add+1):
             session_time = creation_time_start + timezone.timedelta(days=day)
-            GameSession.objects.create(
-                date=session_time,
+            GameSession.objects.get_or_create(
+                date=session_time.date(),
                 table=table,
                 active=True,
                 spots=table.max_spots,
