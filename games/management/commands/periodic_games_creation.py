@@ -2,7 +2,7 @@ import logging
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-
+from ...constants import FUTURE_TABLES_ADDED_AMOUNT, AFTER_HOW_MANY_DAYS_ADD_TABLES
 from ...models import Table, GameSession
 
 logger = logging.getLogger(__name__)
@@ -12,8 +12,8 @@ class Command(BaseCommand):
     help = "Creates game sessions for the future."
 
     def handle(self, *args, **options):
-        creation_time_start = timezone.now() + timezone.timedelta(days=28)
-        days_to_add = 7
+        creation_time_start = timezone.now() + timezone.timedelta(days=AFTER_HOW_MANY_DAYS_ADD_TABLES)
+        days_to_add = FUTURE_TABLES_ADDED_AMOUNT
 
         try:
             table = Table.objects.get(name="Online")

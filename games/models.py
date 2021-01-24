@@ -137,7 +137,7 @@ class GameSessionManager(models.Manager):
 
     def recreate_online_game(self, game):
         online_table = Table.objects.get_online()
-        self.create(
+        self.get_or_create(
             date=game.date,
             table=online_table,
             active=True,
