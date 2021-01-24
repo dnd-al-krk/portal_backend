@@ -105,10 +105,21 @@ class GameSessionBookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        was_booked = instance.dm is not None
+        print("Was booked", was_booked)
+
         needed_dm = instance.adventure and not instance.dm
         if instance.adventure and instance.dm and instance.dm != request.user.profile:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
         update_result = super(GameSessionBookViewSet, self).update(request, *args, **kwargs)
+
+        instance.refresh_from_db()
+        print("DM:", instance.dm)
+        print("Is Online:", instance.is_online)
+        if not was_booked and instance.dm is not None and instance.is_online:
+            GameSession.objects.recreate_online_game(instance)
+
         if needed_dm and update_result.status_code == 200:
             instance.booked_again()
         return update_result

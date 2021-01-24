@@ -22,15 +22,24 @@ from .constants import (
     ADVENTURE_TIER1,
     ADVENTURE_TIER2,
     ADVENTURE_TIER3,
-    ADVENTURE_TIER4,
+    ADVENTURE_TIER4, MINIMUM_PLAYERS_COUNT, ONLINE_TABLE_NAME,
 )
 from utils.models import UUIDModel
+
+
+
+class TableManager(models.Manager):
+
+    def get_online(self):
+        return self.get_queryset().get(name=ONLINE_TABLE_NAME)
 
 
 class Table(UUIDModel):
     name = models.CharField(_("Table name"), max_length=100)
     extra_notes = models.TextField("Table extra notes", blank=True)
     max_spots = models.PositiveIntegerField(_("Maximum spots"), default=1)
+
+    objects = TableManager()
 
     class Meta:
         verbose_name = _("Table")
@@ -39,6 +48,10 @@ class Table(UUIDModel):
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_online(self):
+        return self.name == ONLINE_TABLE_NAME
 
 
 ADVENTURE_TYPES = (
@@ -120,6 +133,18 @@ class GameSessionActiveGamesManager(models.Manager):
         return self.get_queryset().past()
 
 
+class GameSessionManager(models.Manager):
+
+    def recreate_online_game(self, game):
+        online_table = Table.objects.get_online()
+        self.get_or_create(
+            date=game.date,
+            table=online_table,
+            active=True,
+            spots=online_table.max_spots
+        )
+
+
 class GameSession(UUIDModel):
     date = models.DateField(_("Date"))
     table = models.ForeignKey(Table, related_name="game_sessions", on_delete=models.CASCADE)
@@ -141,7 +166,7 @@ class GameSession(UUIDModel):
     report_time = models.DateTimeField(_("Reporting time"), blank=True, null=True)
     extra_players = models.CharField(_("Additional players"), max_length=255, blank=True, null=True)
 
-    objects = models.Manager.from_queryset(GameSessionQuerySet)()
+    objects = GameSessionManager.from_queryset(GameSessionQuerySet)()
     games = GameSessionActiveGamesManager.from_queryset(GameSessionQuerySet)()
 
     class Meta:
@@ -183,12 +208,16 @@ class GameSession(UUIDModel):
     def can_sign_out(self, profile: Profile):
         return self.has_player(profile) and not self.ended
 
+    @property
+    def is_online(self):
+        return self.table.is_online
+
     def checkMinimumPlayers(self):
         """
         This is run after a player signs out of the game session. If there are not enough players
         for the game session, the message is sent to other participants.
         """
-        if self.players.count() < 3:
+        if self.players.count() < MINIMUM_PLAYERS_COUNT:
             send_email(
                 "Not enough players in the game session",
                 "emails/game_not_enough_players.html",
