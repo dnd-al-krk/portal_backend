@@ -12,7 +12,7 @@ class Command(BaseCommand):
     help = "Creates game sessions for the future."
 
     def handle(self, *args, **options):
-        creation_time_start = timezone.now() + timezone.timedelta(days=21)
+        creation_time_start = timezone.now() + timezone.timedelta(days=28)
         days_to_add = 7
 
         try:
