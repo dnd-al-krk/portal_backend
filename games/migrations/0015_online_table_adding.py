@@ -21,6 +21,4 @@ class Migration(migrations.Migration):
 
     dependencies = [("games", "0014_table_extra_notes")]
 
-    operations = [
-        migrations.RunPython(add_online_table)
-    ]
+    operations = [migrations.RunPython(add_online_table, migrations.RunPython.noop)]
