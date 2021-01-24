@@ -22,7 +22,7 @@ from .constants import (
     ADVENTURE_TIER1,
     ADVENTURE_TIER2,
     ADVENTURE_TIER3,
-    ADVENTURE_TIER4,
+    ADVENTURE_TIER4, MINIMUM_PLAYERS_COUNT,
 )
 from utils.models import UUIDModel
 
@@ -188,7 +188,7 @@ class GameSession(UUIDModel):
         This is run after a player signs out of the game session. If there are not enough players
         for the game session, the message is sent to other participants.
         """
-        if self.players.count() < 3:
+        if self.players.count() < MINIMUM_PLAYERS_COUNT:
             send_email(
                 "Not enough players in the game session",
                 "emails/game_not_enough_players.html",
