@@ -19,7 +19,7 @@ DATABASES = {
     }
 }
 
-ALLOWED_HOSTS += ["api.alkrakow.pl", "latest.alkrakow.pl", "alkrakow.pl"]
+ALLOWED_HOSTS += ["latest.dndkrakow.pl", "alkrakow.toady.org", "api.alkrakow.toady.org", "dndkrakow.pl", "api.dndkrakow.pl", "api.rpgkrakow.pl", "rpgkrakow.pl"]
 
 # EMAIL SETTINGS
 EMAIL_HOST = read_env("PORTAL_PROD_EMAIL_HOST")
@@ -28,17 +28,17 @@ EMAIL_FROM = EMAIL_HOST_USER = read_env("PORTAL_PROD_EMAIL_USERNAME")
 EMAIL_HOST_PASSWORD = read_env("PORTAL_PROD_EMAIL_PASSWORD")
 EMAIL_USE_SSL = True
 
-ROOT_URL = "http://api.alkrakow.pl"
+ROOT_URL = "http://api.rpgkrakow.pl"
 
 STATIC_ROOT = BASE_DIR + "/public/static/"
 STATIC_URL = "/static/"
 
 SECURE_SSL_REDIRECT = True
 
-ADMINS = (("AL KRK Tech", "alkrk_tech@toady.org"),)
+ADMINS = (("DnD Kraków", "alkrk_tech@toady.org"),)
 
-CORS_ORIGIN_WHITELIST = ["alkrakow.pl", "latest.alkrakow.pl"]
+CORS_ORIGIN_WHITELIST = ["dndkrakow.pl", "rpgkrakow.pl", "latest.dndkrakow.pl", "alkrakow.toady.org"]
 
-APP_URL = "https://alkrakow.pl"
+APP_URL = "https://rpgkrakow.pl"
 
 TIME_ZONE = "Europe/Warsaw"

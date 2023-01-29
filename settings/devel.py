@@ -12,6 +12,8 @@ EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_USE_TLS = False
 
-ROOT_URL = "http://localhost"
+ROOT_URL = "http://localhost:8000"
 
 APP_URL = "http://localhost:3000"
+
+ALLOWED_HOSTS = ["localhost"]
