@@ -46,7 +46,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ("id", "user", "nickname", "dci", "role", "characters_count")
+        fields = ("id", "user", "nickname", "role", "characters_count")
 
     def update(self, instance, validated_data):
         try:
@@ -54,7 +54,6 @@ class ProfileSerializer(serializers.ModelSerializer):
         except KeyError:
             pass
         else:
-            instance.dci = validated_data.get("dci", instance.dci)
             instance.nickname = validated_data.get("nickname", instance.nickname)
             instance.save()
 
@@ -79,7 +78,7 @@ class PublicProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ("id", "user", "nickname", "dci", "role", "characters_count", "first_name", "last_name")
+        fields = ("id", "user", "nickname", "role", "characters_count", "first_name", "last_name")
 
     def get_role(self, obj):
         return obj.get_role_display()

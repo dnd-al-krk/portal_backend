@@ -15,10 +15,8 @@ def send_report(queryset: GameSessionQuerySet):
     for session in for_update:
         game = {
             "date": session.date.strftime("%Y-%m-%d"),
-            "players": list(
-                session.gamesessionplayersignup_set.filter(reported=True).values_list("player__dci", flat=True)
-            ),
-            "dm": str(session.dm.dci),
+            "players": [],
+            "dm": "",
             "extra_players": session.extra_players if session.extra_players else "",
         }
         print(game)
