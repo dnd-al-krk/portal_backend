@@ -102,14 +102,18 @@ class RegisterUserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Password length should be at least 8 characters")
         return password
 
+    def validate(self, data):
+        if User.objects.filter(email=data["email"]).exists():
+            raise serializers.ValidationError("You cannot signup as user with this data.")
+        return data
+
 
 class RegisterProfileSerializer(serializers.ModelSerializer):
     user = RegisterUserSerializer(required=True)
-    dci = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = Profile
-        fields = ("nickname", "dci", "user")
+        fields = ("nickname", "user")
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -121,7 +125,7 @@ class RegisterProfileSerializer(serializers.ModelSerializer):
             is_active=False,
         )
 
-        return Profile.objects.create(user=user, nickname=validated_data["nickname"], dci=validated_data["dci"])
+        return Profile.objects.create(user=user, nickname=validated_data["nickname"])
 
     def validate(self, data):
         if not ((data["user"]["first_name"] and data["user"]["last_name"]) or data["nickname"]):
