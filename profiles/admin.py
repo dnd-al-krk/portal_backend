@@ -27,7 +27,7 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "role", "dci"]
+    list_display = ["__str__", "role"]
     actions = ["make_dm", "make_player"]
 
     def make_dm(self, request, queryset):
