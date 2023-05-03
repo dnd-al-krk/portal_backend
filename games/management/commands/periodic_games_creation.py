@@ -12,19 +12,22 @@ class Command(BaseCommand):
     help = "Creates game sessions for the future."
 
     def handle(self, *args, **options):
-        creation_time_start = timezone.now() + timezone.timedelta(days=AFTER_HOW_MANY_DAYS_ADD_TABLES)
-        days_to_add = FUTURE_TABLES_ADDED_AMOUNT
+        self.creation_time_start = timezone.now() + timezone.timedelta(days=AFTER_HOW_MANY_DAYS_ADD_TABLES)
+        self.days_to_add = FUTURE_TABLES_ADDED_AMOUNT
+        self.create_tables("Online")
+        self.create_tables("Other (see additional info)")
 
+    def create_tables(self, name):
         try:
-            table = Table.objects.get(name="Online")
+            table = Table.objects.get(name=name)
         except Table.DoesNotExist:
             logger.warning(
                 "There is no online table set!"
             )
             return
 
-        for day in range(1, days_to_add+1):
-            session_time = creation_time_start + timezone.timedelta(days=day)
+        for day in range(1, self.days_to_add+1):
+            session_time = self.creation_time_start + timezone.timedelta(days=day)
             GameSession.objects.get_or_create(
                 date=session_time.date(),
                 table=table,
