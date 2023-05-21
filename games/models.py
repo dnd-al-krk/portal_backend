@@ -185,13 +185,16 @@ class GameSession(UUIDModel):
         verbose_name_plural = _("Game Sessions")
         ordering = ("-date", "table")
 
+    def __str__(self):
+        return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
+
+    def get_absolute_url(self):
+        return settings.APP_URL + "/games/game/" + str(self.id)
+
     def date_end(self):
         if self.time_end and self.time_start and self.time_end < self.time_start:
             return self.date + datetime.timedelta(days=1)
         return self.date
-
-    def __str__(self):
-        return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
 
     def can_sign_up(self, profile: Profile):
         # TODO: Add test to cover this logic
@@ -256,9 +259,6 @@ class GameSession(UUIDModel):
             send_discord_game_notification(
                 self.format_discord_message("Zwolniono jedno miejsce dla gry.")
             )
-
-    def get_absolute_url(self):
-        return settings.APP_URL + "/games/game/" + str(self.id)
 
     def cancel(self):
         self.dm = None
