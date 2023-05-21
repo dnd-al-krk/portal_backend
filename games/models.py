@@ -236,7 +236,7 @@ class GameSession(UUIDModel):
             f"Przygoda: {self.adventure}\n"
             f"DM: {self.dm}\n"
             f"Tier: <@&{self.adventure.get_discord_tier_role()}>\n"
-            f"Zapisz się na stronie sesji: {settings.APP_URL}{self.get_absolute_url()}"
+            f"Zapisz się na stronie sesji: {self.get_absolute_url()}"
         )
 
     def check_minimum_players(self):
