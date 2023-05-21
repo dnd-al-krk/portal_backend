@@ -51,12 +51,15 @@ class GameSessionViewSet(
         if character.dead:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        GameSessionPlayerSignUp.objects.create(game=instance, player=profile, character=character)
+        signup, _ = GameSessionPlayerSignUp.objects.get_or_create(game=instance, player=profile)
+        signup.character = character
+        signup.save(update_fields=["character"])
+
         return Response()
 
     @action(methods=["PUT"], detail=True)
     def signOut(self, request, *args, **kwargs):
-        instance = self.get_object()
+        instance: GameSession = self.get_object()
         profile = request.user.profile
 
         if not instance.can_sign_out(profile):
@@ -66,7 +69,8 @@ class GameSessionViewSet(
             signup = GameSessionPlayerSignUp.objects.get(game=instance, player=profile)
             signup.delete()
 
-            instance.checkMinimumPlayers()
+            instance.check_minimum_players()
+            instance.check_last_spot_notify()
             return Response()
         except GameSessionPlayerSignUp.DoesNotExist:
             return Response(status=status.HTTP_400_BAD_REQUEST)

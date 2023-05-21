@@ -20,7 +20,7 @@ class Profile(models.Model):
     role = models.CharField(_("Role"), max_length=20, default=ROLE_PLAYER, choices=USER_TYPE)
 
     def __str__(self):
-        return "{} {}".format(self.user.first_name, self.user.last_name)
+        return f"{self.user.first_name} {self.user.last_name} / {self.nickname}"
 
     def is_dm(self):
         return self.role == ROLE_DM

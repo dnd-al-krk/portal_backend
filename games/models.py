@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 import datetime
 import time
 
+from utils.discord import send_discord_game_notification
 from utils.email import send_email
 from .constants import (
     ADVENTURE_TYPE_EX,
@@ -74,6 +75,13 @@ ADVENTURE_TIERS = (
     (ADVENTURE_TIER4, _("Tier 4 (Level 17-20)")),
 )
 
+TIER_TO_DISCORD_ROLE = {
+    ADVENTURE_TIER1: settings.DISCORD_ROLE_TIER1,
+    ADVENTURE_TIER2: settings.DISCORD_ROLE_TIER2,
+    ADVENTURE_TIER3: settings.DISCORD_ROLE_TIER3,
+    ADVENTURE_TIER4: settings.DISCORD_ROLE_TIER4,
+}
+
 
 class Adventure(UUIDModel):
     season = models.PositiveIntegerField(_("Season"), blank=True, null=True)
@@ -97,6 +105,9 @@ class Adventure(UUIDModel):
         return "DD{type}{season}{number} - {title}".format(
             type=self.get_type(), season=self.get_season(), number=self.get_number(), title=self.title
         )
+
+    def get_discord_tier_role(self):
+        return TIER_TO_DISCORD_ROLE.get(self.tier)
 
     def get_season(self):
         return str(self.season) + "-" if self.season is not None else ""
@@ -188,8 +199,7 @@ class GameSession(UUIDModel):
             self.dm is not None
             and not self.ended
             and self.dm.id != profile.id
-            and self.players.count() < self.spots
-            and profile not in self.players.all()
+            and (self.players.count() < self.spots or profile in self.players.all())
         )
 
     @property
@@ -216,17 +226,35 @@ class GameSession(UUIDModel):
     def is_booked(self):
         return self.dm is not None
 
-    def checkMinimumPlayers(self):
+    def format_discord_message(self, msg: str):
+        return (
+            f"{msg}\n"
+            f"Data: {self.date}\n"
+            f"Przygoda: {self.adventure}\n"
+            f"DM: {self.dm}\n"
+            f"Tier: <@&{self.adventure.get_discord_tier_role()}>"
+        )
+
+    def check_minimum_players(self):
         """
         This is run after a player signs out of the game session. If there are not enough players
         for the game session, the message is sent to other participants.
         """
-        if self.players.count() < MINIMUM_PLAYERS_COUNT:
+        if self.players.count() == (MINIMUM_PLAYERS_COUNT - 1):
             send_email(
                 "Not enough players in the game session",
                 "emails/game_not_enough_players.html",
                 {"game": self},
                 bcc=[player.user.email for player in self.players.all()] + [self.dm.user.email],
+            )
+            send_discord_game_notification(
+                self.format_discord_message("Po zwolnieniu miejsca w grze brakuje minimalnej ilości graczy. Rozważ dołączenie.")
+            )
+
+    def check_last_spot_notify(self):
+        if self.players.count() == (self.spots - 1):
+            send_discord_game_notification(
+                self.format_discord_message("Zwolniono jedno miejsce dla gry.")
             )
 
     def get_absolute_url(self):
