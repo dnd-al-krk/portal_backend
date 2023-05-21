@@ -186,7 +186,7 @@ class GameSession(UUIDModel):
         ordering = ("-date", "table")
 
     def __str__(self):
-        return "{date} / {table} / {adventure}".format(date=self.date, table=self.table, adventure=str(self.adventure))
+        return f"{self.date} / {self.table} / {self.adventure}"
 
     def get_absolute_url(self):
         return settings.APP_URL + "/games/game/" + str(self.id)
