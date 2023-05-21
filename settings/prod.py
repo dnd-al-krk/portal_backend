@@ -42,3 +42,9 @@ CORS_ORIGIN_WHITELIST = ["dndkrakow.pl", "rpgkrakow.pl", "latest.dndkrakow.pl", 
 APP_URL = "https://rpgkrakow.pl"
 
 TIME_ZONE = "Europe/Warsaw"
+
+DISCORD_WEBHOOK_URL = read_env("PORTAL_DISCORD_WEBHOOK_URL")
+DISCORD_ROLE_TIER1 = read_env("PORTAL_DISCORD_ROLE_TIER1")
+DISCORD_ROLE_TIER2 = read_env("PORTAL_DISCORD_ROLE_TIER2")
+DISCORD_ROLE_TIER3 = read_env("PORTAL_DISCORD_ROLE_TIER3")
+DISCORD_ROLE_TIER4 = read_env("PORTAL_DISCORD_ROLE_TIER4")

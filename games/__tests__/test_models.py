@@ -69,7 +69,7 @@ def test_minimum_players_not_available_email_sent(
     mocker.patch("games.models.send_email")
 
     # when
-    game.checkMinimumPlayers()
+    game.check_minimum_players()
 
     # then
     assert games.models.send_email.call_count == 1
@@ -85,7 +85,7 @@ def test_minimum_players_number_is_there_no_email(
     mocker.patch("games.models.send_email")
 
     # when
-    game.checkMinimumPlayers()
+    game.check_minimum_players()
 
     # then
     assert not games.models.send_email.called
