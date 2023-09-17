@@ -15,7 +15,7 @@ class Profile(models.Model):
     USER_TYPE = ((ROLE_DM, "Dungeon Master"), (ROLE_PLAYER, "Player"))
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    nickname = models.CharField(_("Nickname"), max_length=255, blank=True, null=True)
+    nickname = models.CharField(_("Discord Nickname"), max_length=255, blank=True, null=True)
     dci = models.CharField(_("DCI"), max_length=15, blank=True, null=True)
     role = models.CharField(_("Role"), max_length=20, default=ROLE_PLAYER, choices=USER_TYPE)
 
