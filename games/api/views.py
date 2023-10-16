@@ -7,8 +7,8 @@ from rest_framework.response import Response
 
 from profiles.models import PlayerCharacter
 from .filters import AdventureFilter, GameSessionFilter
-from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer
-from ..models import Adventure, GameSession, GameSessionPlayerSignUp
+from .serializers import AdventureSerializer, GameSessionSerializer, GameSessionBookSerializer, TableSerializer
+from ..models import Adventure, GameSession, GameSessionPlayerSignUp, Table
 
 
 class AdventuresViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -20,6 +20,12 @@ class AdventuresViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
     search_fields = ("title",)
     ordering_fields = ("season", "number", "title")
     ordering = ("season", "number", "title")
+
+
+class TablesViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = TableSerializer
+    queryset = Table.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class GameSessionViewSet(
