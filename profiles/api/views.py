@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from django.conf import settings
 from django_filters import rest_framework as filters
@@ -17,6 +19,9 @@ from .serializers import (
     PublicProfileSerializer,
 )
 from ..models import PlayerCharacter, Profile
+
+
+logger = logging.getLogger(__file__)
 
 
 class PlayerCharacterViewSet(viewsets.ModelViewSet):
@@ -79,15 +84,15 @@ class RegistrationView(APIView):
         response = requests.post(url, data=data)
         result = response.json()
 
-        logger.info("Captcha check response: %s", result)
+        logger.warning("Turnstile token check: %s", result)
 
         return result.get("success", False)
 
     def post(self, request, *args, **kwargs):
-        serializer = RegisterProfileSerializer(data=request.data)
         if not self._verify_turnstile(request):
-            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+        serializer = RegisterProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
