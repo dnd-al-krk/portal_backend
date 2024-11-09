@@ -33,7 +33,7 @@ ROOT_URL = "http://api.rpgkrakow.pl"
 STATIC_ROOT = BASE_DIR + "/public/static/"
 STATIC_URL = "/static/"
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 ADMINS = (("DnD Kraków", "alkrk_tech@toady.org"),)
 
