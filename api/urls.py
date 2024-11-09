@@ -1,4 +1,5 @@
-from django.conf.urls import url, include
+from django.urls import re_path as url
+from django.urls import include
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 from profiles.api import views as profiles_views
@@ -9,9 +10,9 @@ router = DefaultRouter()
 router.register("characters", profiles_views.PlayerCharacterViewSet)
 router.register("profiles", profiles_views.ProfileViewSet)
 router.register("adventures", games_views.AdventuresViewSet)
-router.register("games/list", games_views.GameSessionViewSet)
-router.register("games/future", games_views.FutureGameSessionViewSet)
-router.register("games/past", games_views.PastGameSessionViewSet)
+router.register("games/list", games_views.GameSessionViewSet, basename="game_session")
+router.register("games/future", games_views.FutureGameSessionViewSet, basename="future_game_session")
+router.register("games/past", games_views.PastGameSessionViewSet, basename="past_game_session")
 router.register("games/booking", games_views.GameSessionBookViewSet)
 # router.register(r'register', profiles_views.RegistrationView)
 

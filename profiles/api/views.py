@@ -1,3 +1,5 @@
+import requests
+from django.conf import settings
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, mixins, status
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -6,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .filters import PlayerCharacterFilter
-from .permissions import IsOwnerOrReadOnly, IsDMOwnerOrReadOnly, OnlyDMCanRead, IsProfileOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsProfileOwnerOrReadOnly
 from .serializers import (
     PlayerCharacterSerializer,
     ProfileSerializer,
@@ -62,8 +64,30 @@ class RegistrationView(APIView):
     serializer_class = RegisterProfileSerializer
     model = Profile.objects.all()
 
+    def _verify_turnstile(self, request):
+        token = request.data.pop("turnstile_token")
+        if not token:
+            return False
+
+        url = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+        data = {
+            "secret": settings.TURNSTILE_SECRET_KEY,
+            "response": token,
+            "remoteip": request.META.get("REMOTE_ADDR")
+        }
+
+        response = requests.post(url, data=data)
+        result = response.json()
+
+        logger.info("Captcha check response: %s", result)
+
+        return result.get("success", False)
+
     def post(self, request, *args, **kwargs):
         serializer = RegisterProfileSerializer(data=request.data)
+        if not self._verify_turnstile(request):
+            return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

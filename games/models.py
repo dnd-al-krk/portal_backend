@@ -3,7 +3,7 @@ from profile import Profile
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 import datetime
 import time
 
@@ -293,4 +293,4 @@ class GameSessionPlayerSignUp(models.Model):
     player = models.ForeignKey("profiles.Profile", on_delete=models.CASCADE)
     created = models.DateTimeField(_("Created"), auto_now_add=True)
     character = models.ForeignKey("profiles.PlayerCharacter", null=True, blank=True, on_delete=models.SET_NULL)
-    reported = models.NullBooleanField(_("Reported"), default=None)
+    reported = models.BooleanField(_("Reported"), default=None, null=True)

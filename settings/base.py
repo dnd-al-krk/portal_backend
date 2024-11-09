@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
+    'rest_framework_jwt',
+    'rest_framework_jwt.blacklist',
     "django_filters",
     "django_rest_passwordreset",
     "profiles",
@@ -146,3 +148,5 @@ DISCORD_ROLE_TIER1 = "1"
 DISCORD_ROLE_TIER2 = "2"
 DISCORD_ROLE_TIER3 = "3"
 DISCORD_ROLE_TIER4 = "4"
+
+TURNSTILE_SECRET_KEY = os.getenv("TURNSTILE_SECRET_KEY", "NONE")
