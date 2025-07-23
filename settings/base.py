@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
+    'rest_framework_jwt',
+    'rest_framework_jwt.blacklist',
     "django_filters",
     "django_rest_passwordreset",
     "profiles",
@@ -52,7 +54,6 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "corsheaders.middleware.CorsPostCsrfMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -146,3 +147,5 @@ DISCORD_ROLE_TIER1 = "1"
 DISCORD_ROLE_TIER2 = "2"
 DISCORD_ROLE_TIER3 = "3"
 DISCORD_ROLE_TIER4 = "4"
+
+TURNSTILE_SECRET_KEY = os.getenv("TURNSTILE_SECRET_KEY", "NONE")

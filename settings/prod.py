@@ -33,11 +33,11 @@ ROOT_URL = "http://api.rpgkrakow.pl"
 STATIC_ROOT = BASE_DIR + "/public/static/"
 STATIC_URL = "/static/"
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 
 ADMINS = (("DnD Kraków", "alkrk_tech@toady.org"),)
 
-CORS_ORIGIN_WHITELIST = ["dndkrakow.pl", "rpgkrakow.pl", "latest.dndkrakow.pl", "alkrakow.toady.org"]
+CORS_ORIGIN_WHITELIST = ["https://dndkrakow.pl", "https://rpgkrakow.pl", "https://latest.dndkrakow.pl"]
 
 APP_URL = "https://rpgkrakow.pl"
 
@@ -48,3 +48,5 @@ DISCORD_ROLE_TIER1 = read_env("PORTAL_DISCORD_ROLE_TIER1")
 DISCORD_ROLE_TIER2 = read_env("PORTAL_DISCORD_ROLE_TIER2")
 DISCORD_ROLE_TIER3 = read_env("PORTAL_DISCORD_ROLE_TIER3")
 DISCORD_ROLE_TIER4 = read_env("PORTAL_DISCORD_ROLE_TIER4")
+
+TURNSTILE_SECRET_KEY = read_env("PORTAL_TURNSTILE_SECRET_KEY")
