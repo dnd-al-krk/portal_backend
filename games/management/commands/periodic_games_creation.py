@@ -34,9 +34,14 @@ class Command(BaseCommand):
             if dow and session_time.date().weekday() != dow:
                 continue
 
-            GameSession.objects.get_or_create(
-                date=session_time.date(),
-                table=table,
-                active=True,
-                spots=table.max_spots,
-            )
+            try:
+                gs, created = GameSession.objects.get_or_create(
+                    date=session_time.date(),
+                    table=table,
+                    active=True,
+                )
+                if created:
+                    gs.spots = table.max_spots
+                    gs.save(update_fields=["spots"])
+            except GameSession.MultipleObjectsReturned:
+                logger.error("Could not create a Game Session for date: %s table id: %s", str(session_time.date()), str(table.id))
