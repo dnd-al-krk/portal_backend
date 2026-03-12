@@ -16,7 +16,7 @@ class AdventuresViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewse
     queryset = Adventure.objects.all()
     permission_classes = [IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filter_class = AdventureFilter
+    filterset_class = AdventureFilter
     search_fields = ("title",)
     ordering_fields = ("season", "number", "title")
     ordering = ("season", "number", "title")
@@ -29,7 +29,7 @@ class GameSessionViewSet(
     queryset = GameSession.games.all()
     permission_classes = [IsAuthenticated]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filter_class = GameSessionFilter
+    filterset_class = GameSessionFilter
     search_fields = ("table__name", "dm__user__first_name", "dm__user__last_name", "dm__nickname", "adventure__title")
     ordering_fields = ("date", "time_end", "time_start")
     ordering = "date"

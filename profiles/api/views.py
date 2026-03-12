@@ -29,7 +29,7 @@ class PlayerCharacterViewSet(viewsets.ModelViewSet):
     queryset = PlayerCharacter.objects.all()
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
     filter_backends = (filters.DjangoFilterBackend, SearchFilter, OrderingFilter)
-    filter_class = PlayerCharacterFilter
+    filterset_class = PlayerCharacterFilter
     search_fields = ("name", "owner__nickname", "owner__user__first_name", "owner__user__last_name")
     ordering_fields = ("name", "level", "created", "modified")
     ordering = "-created"

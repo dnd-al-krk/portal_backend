@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.11
 
 RUN apt-get update && apt-get install -y postgresql-client
 
@@ -15,6 +15,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV DJANGO_SETTINGS_MODULE=settings.docker
 ENV PORTAL_PROD_DB_NAME=postgres
 ENV PORTAL_PROD_DB_USER=postgres
+ENV PORTAL_PROD_DB_PASS=postgres
 ENV PORTAL_PROD_DB_HOST=db
 
 WORKDIR /code
