@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "Keep_it_secret!Keep_it_safe!"
+SECRET_KEY = "django-insecure-dev-key-must-be-at-least-32-chars-long-for-jwt"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_extensions",
     "rest_framework",
-    'rest_framework_jwt',
-    'rest_framework_jwt.blacklist',
+    "rest_framework_simplejwt.token_blacklist",
     "django_filters",
     "django_rest_passwordreset",
     "profiles",
@@ -106,8 +105,6 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
@@ -123,16 +120,16 @@ TEST_RUNNER = "portal.runners.PytestTestRunner"
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
     ),
 }
 
-JWT_AUTH = {
-    "JWT_EXPIRATION_DELTA": datetime.timedelta(hours=48),
-    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=14),
-    "JWT_ALLOW_REFRESH": True,
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(hours=48),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=14),
+    "ROTATE_REFRESH_TOKENS": True,
 }
 
 EMAIL_HOST = "localhost"

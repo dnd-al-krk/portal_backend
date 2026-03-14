@@ -37,7 +37,7 @@ SECURE_SSL_REDIRECT = False
 
 ADMINS = (("DnD Kraków", "alkrk_tech@toady.org"),)
 
-CORS_ORIGIN_WHITELIST = ["https://dndkrakow.pl", "https://rpgkrakow.pl", "https://latest.dndkrakow.pl"]
+CORS_ALLOWED_ORIGINS = ["https://dndkrakow.pl", "https://rpgkrakow.pl", "https://latest.dndkrakow.pl"]
 
 APP_URL = "https://rpgkrakow.pl"
 
